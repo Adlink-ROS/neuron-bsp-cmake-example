@@ -24,35 +24,23 @@ int main(int /*argc*/, char* /*argv*/[])
 {
   nbsp_ret_t ret = enRet::SUCCESS;
   nbsp_gpio_dir_t dir;
-  nbsp_gpio_resistance_t resist;
   nbsp_gpio_value_t value;
   spdlog::set_level(spdlog::level::debug);
+  
+  // Replace 0 with your target pin
   gpio::GPIO pin(0);
 
-  ret = pin.selectStragetry(enDrvType::SEMA);
+  ret = pin.setStrategy(enDrvType::NATIVE);
 
   if (ret != enRet::SUCCESS) {
     spdlog::error("select stragetry failed");
     return 1;
   }
-
-  ret = pin.setResistance(gpio::enResistance::PULL_DOWN);
-
+  
+  ret = pin.init();
   if (ret != enRet::SUCCESS) {
-    spdlog::error("setting pin resistance failed");
     return 1;
   }
-
-  spdlog::info("read back pin internal resistance");
-
-
-  ret = pin.getResistance(&resist);
-
-  if (ret != enRet::SUCCESS) {
-    spdlog::error("read back pin internal resistance failed");
-  }
-
-  spdlog::info("read back pin internal resistance is {}", resist);
 
   spdlog::info("setting pin direction to output");
 
@@ -79,26 +67,6 @@ int main(int /*argc*/, char* /*argv*/[])
     spdlog::error("set pin value to high failed");
     return 1;
   }
-
-  spdlog::info("set pin direction to input");
-
-  ret = pin.setDir(gpio::enDIR::INPUT);
-
-  if (ret != enRet::SUCCESS) {
-    spdlog::error("set pin direction to input failed");
-    return 1;
-  }
-
-  spdlog::info("get pin value");
-
-  ret = pin.getValue(&value);
-
-  if (ret != enRet::SUCCESS) {
-    spdlog::error("get pin value failed");
-    return 1;
-  }
-
-  spdlog::info("pin value is {}", value);
 
   return 0;
 }
