@@ -14,13 +14,22 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-set(target gpio_example)
-
 find_package(neuron-bsp PATHS /opt/neuron-bsp NO_DEFAULT_PATH REQUIRED)
 
-add_executable(${target} main.cpp)
+######### gpio write ############
+add_executable(gpio_write gpio_write.cpp)
 
-target_link_libraries(${target}
+target_link_libraries(gpio_write
+  PRIVATE
+  neuron-bsp::gpio
+  neuron-bsp::platform
+  )
+
+
+######### gpio read ##############
+add_executable(gpio_read gpio_read.cpp)
+
+target_link_libraries(gpio_read
   PRIVATE
   neuron-bsp::gpio
   neuron-bsp::platform
